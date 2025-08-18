@@ -1,0 +1,16 @@
+- hosts: localhost
+  tasks:
+    - name: Load database variables from the vault
+      include_vars:
+        name: vault_variables
+        file: ansible/group_vars/webservers/vault.yml
+
+    - name: Write terraform variables to a file
+      copy:
+        content: |
+          yc_cloud_id    = "{{ vault_variables.yc_cloud_id }}"
+          yc_folder_id   = "{{ vault_variables.yc_folder_id }}"
+          yc_db_name     = "{{ vault_variables.redmine_database_name }}"
+          yc_db_user     = "{{ vault_variables.remine_database_username }}"
+          yc_db_password = "{{ vault_variables.redmine_database_password }}"
+        dest: terraform/secret.auto.tfvars

@@ -1,0 +1,5 @@
+- name: Run preparation playbook
+  import_playbook: preparation_playbook.yml
+
+- name: Run deployment playbook
+  import_playbook: deployment_playbook.yml

@@ -1,0 +1,13 @@
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Stop redmine docker container
+      community.docker.docker_container:
+        name: "{{ redmine_container_name }}"
+        state: stopped
+
+    - name: Remove redmine docker container
+      community.docker.docker_container:
+        name: "{{ redmine_container_name }}"
+        state: absent
