@@ -46,6 +46,13 @@ resource "yandex_mdb_postgresql_database" "postgresql_database" {
   depends_on = [yandex_mdb_postgresql_cluster.postgresql_cluster]
 }
 
+resource "local_file" "db_host" {
+  filename = "../ansible/group_vars/webservers/db_address.yml"
+  content = templatefile("db_address.yml.tftpl", {
+    db_address = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
+  })
+}
+
 output "postgresql_host" {
   value = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
 }

@@ -1,0 +1,26 @@
+- name: Deploy
+  hosts: all
+  become: true
+  vars_files:
+    - ./group_vars/webservers/db_address.yml
+
+  tasks:
+    - name: Geting .env file
+      ansible.builtin.template:
+        src: .env.template.j2
+        dest: .env
+        mode: '0644'
+
+    - name: Pulling redmine docker image
+      community.docker.docker_image:
+        name: redmine
+        tag: latest
+        source: pull
+
+    - name: Running redmine docker container
+      community.docker.docker_container:
+        name: "{{ redmine_container_name }}"
+        image: "redmine:latest"
+        env_file: .env
+        published_ports:
+          - "80:3000"

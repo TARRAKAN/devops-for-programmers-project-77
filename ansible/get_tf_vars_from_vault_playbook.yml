@@ -1,0 +1,19 @@
+- name: Get terrafrom variables from the ansible vault
+  hosts: localhost
+  tasks:
+    - name: Load database variables from the ansible vault
+      ansible.builtin.include_vars:
+        name: vault_variables
+        file: group_vars/webservers/vault.yml
+
+    - name: Write terraform variables to a file
+      ansible.builtin.copy:
+        mode: '0644'
+        content: |
+          yc_iam_token   = "{{ vault_variables.yc_iam_token }}"
+          yc_cloud_id    = "{{ vault_variables.yc_cloud_id }}"
+          yc_folder_id   = "{{ vault_variables.yc_folder_id }}"
+          yc_db_name     = "{{ vault_variables.redmine_database_name }}"
+          yc_db_user     = "{{ vault_variables.remine_database_username }}"
+          yc_db_password = "{{ vault_variables.redmine_database_password }}"
+        dest: ../terraform/secret.auto.tfvars

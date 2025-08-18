@@ -1,0 +1,21 @@
+- name: Install the dependencies
+  hosts: all
+  become: true
+  vars:
+    pip_install_packages:
+      - name: docker
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
+- name: Run datadog helthcheck
+  hosts: webservers
+  become: true
+  vars:
+    datadog_checks:
+      http_check:
+        init_config:
+          instances:
+            - url: http://158.160.175.96
+  roles:
+    - role: datadog.datadog

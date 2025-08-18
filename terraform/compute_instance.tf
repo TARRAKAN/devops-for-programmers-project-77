@@ -35,6 +35,16 @@ resource "yandex_compute_instance" "compute_instance" {
   depends_on = [yandex_mdb_postgresql_cluster.postgresql_cluster]
 }
 
+resource "local_file" "ansible_inventory" {
+  filename = "../ansible/inventory.ini"
+  content = templatefile("inventory.ini.tftpl", {
+    web_servers_ips = {
+      for instance in yandex_compute_instance.compute_instance :
+      instance.name => instance.network_interface[0].nat_ip_address
+    }
+  })
+}
+
 output "compute_instances_ip" {
   value = try(yandex_compute_instance.compute_instance[*].network_interface[0].nat_ip_address)
 }
