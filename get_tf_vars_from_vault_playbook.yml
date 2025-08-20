@@ -8,9 +8,11 @@
     - name: Write terraform variables to a file
       copy:
         content: |
-          yc_cloud_id    = "{{ vault_variables.yc_cloud_id }}"
-          yc_folder_id   = "{{ vault_variables.yc_folder_id }}"
-          yc_db_name     = "{{ vault_variables.redmine_database_name }}"
-          yc_db_user     = "{{ vault_variables.remine_database_username }}"
-          yc_db_password = "{{ vault_variables.redmine_database_password }}"
+          yc_cloud_id     = "{{ vault_variables.yc_cloud_id }}"
+          yc_folder_id    = "{{ vault_variables.yc_folder_id }}"
+          yc_db_name      = "{{ vault_variables.redmine_database_name }}"
+          yc_db_user      = "{{ vault_variables.remine_database_username }}"
+          yc_db_password  = "{{ vault_variables.redmine_database_password }}"
+          datadog_app_key = "{{ vault_variables.datadog_app_key }}"
+          datadog_api_key = "{{ vault_variables.datadog_api_key }}"
         dest: terraform/secret.auto.tfvars
